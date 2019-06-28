@@ -7,7 +7,7 @@ addpath(genpath(strcat(pwd,'/home/rajeshree/catkin_ws/src/manipulation')));
 robot = createRigidBodyTree;
 axes = show(robot);
 axes.CameraPositionMode = 'auto';
-
+pause(0.1);
 % Perform kinematics on torso region. assigning some values to utorso,ltorso and mtorso. 
 % create one empty matrix of 1*109 and assign the values
 
@@ -18,10 +18,10 @@ for i = 1:3
 end
 
 % Visualize robot configuration
-title('Atlas wayPoint tracking animation');
-% axis([-0.1 0.4 -0.35 0.35 0 0.35]);
+title('Atlas forward kinematics animation');
+
 for i = 1:size(configSoln)
     show(robot,configSoln(i,:));
-    %pause(0.1);
+    pause(0.01);
 end
 hold off;
