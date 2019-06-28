@@ -13,8 +13,8 @@ axes.CameraPositionMode = 'auto';
 
 configSoln = zeros(1,109);
 
-for i = 4:10
-   configSoln(i) = 0;
+for i = 1:3
+   configSoln(i) = 0.5;
 end
 
 % Visualize robot configuration
