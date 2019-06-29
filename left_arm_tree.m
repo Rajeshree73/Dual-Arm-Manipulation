@@ -1,32 +1,46 @@
 % Create rigid body tree from pelvis to left arm for inverse kinematics 
 % Pelvis is taken as a Basename and from there to the left end-effector rigid body is created 
+clear all;
+
+% left_arm_tree
+
+robot = createRigidBodyTree;
+base = robot.BaseName;
+left_arm = robotics.RigidBodyTree;
 
 
-function [robot,homeConfig] = left_arm_tree
+body1 = getBody(robot,'ltorso');
+jnt1 = robotics.Joint('jnt1','revolute');
+replaceJoint(robot,'ltorso',jnt1);
+addBody(left_arm,body1,'base');
 
-robot = importrobot('/home/rajeshree/catkin_ws/src/ihmc_repos/matlab_ihmc_atlas_ros/urdf/atlas.urdf');
-robot = robotics.RigidBodyTree;
-
-% body0 = robotics.RigidBody('pelvis');
-% jnt0 = robotics.Joint('jnt0','fixed');
-% body0.Joint = jnt0;
-% BaseName = 'pelvis';
-% basename = robot.BaseName;
-% addBody(robot,body0,basename)
-% 
-% body1 = robotics.RigidBody('b1');
-% jnt1 = robotics.Joint('jnt1','revolute');
-% body1.Joint = jnt1;
-% addBody(robot,body1,'pelvis')
-
-a = sub(robot,'ltorso');
-addSubtree(robot,robot.BaseName,a);
-% getBody(robot,'pelvis');
-% addBody(robot,)
+show(robot);
+showdetails(left_arm);
 
 
-% Return to its home configuration 
-homeConfig = robot.homeConfiguration;
-showdetails(robot)
 
+% Create RigidBodyTree object for inverse kinematics
+% Create tree-structured robot as it is representation of the robot structure
+
+
+function [robot,homeConfig] = createRigidBodyTree
+
+% Import the URDF file to load the robot
+
+    robot = importrobot('/home/rajeshree/catkin_ws/src/ihmc_repos/matlab_ihmc_atlas_ros/urdf/atlas.urdf');
+    
+    
+    % Add gravity 
+    gravityVec = [0 0 -9.80665];
+    robot.Gravity = gravityVec;
+    % define Data Format for dynamic simulation
+    % robot.DataFormat = "row";
+ 
+    % Return to its home configuration 
+    homeConfig = robot.homeConfiguration;
+
+    
 end
+
+     
+    
