@@ -21,7 +21,7 @@ base = robot.BaseName;
 % 
 % show(robot);
 % showdetails(left_arm);
-newSubtree = subtree(robot,'l_scap');
+newSubtree = subtree(robot,'l_clav');
 
 % Create a point for end effector position
 wayPoints = [0.6 0.6 0.2];
