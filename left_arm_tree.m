@@ -111,11 +111,12 @@ end
 % 
 % show(robot);
 
-%% Visualize robot configurations
+% Visualize robot configurations
 title('Robot waypoint tracking visualization')
+
 %axis([-0.1 0.4 -0.35 0.35 0 0.35]);
-for idx = 1:size(eePositions,2)
-    show(robot,configSoln(idx,:), 'PreservePlot', false,'Frames','off');
+for i = 1:30
+    show(newSubtree,configSoln(i,:));
     pause(0.1)
 end
 hold off
