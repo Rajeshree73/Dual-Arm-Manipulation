@@ -21,11 +21,22 @@ base = robot.BaseName;
 % 
 % show(robot);
 % showdetails(left_arm);
+% newSubtree = subtree(robot,'l_clav');
+% a = removeBody(newSubtree,'l_palm');
+newSubtree = subtree(robot,'utorso');
+a = removeBody(newSubtree,'l_palm');
+b = removeBody(newSubtree,'r_clav');
+c = removeBody(newSubtree,'l_situational_awareness_camera_link');
+d = removeBody(newSubtree,'head');
+c = removeBody(newSubtree,'r_situational_awareness_camera_link');
+newJoint = robotics.Joint('fixed');
+replaceJoint(newSubtree,'utorso',newJoint);
 
-newSubtree = subtree(robot,'l_clav');
- a = removeBody(newSubtree,'l_palm');
 
+
+ 
 % Create a point for end effector position
+% wayPoints = [0.5 0.5 -0.5;0.4 0.6 -0.4;0.3 0.7 -0.3;0.2 0.8 -0.2;0.1 0.9 -0.1;-0.1 1 0.1;-0.3 1.1 0.3;-0.5 1.2 0.5];
 wayPoints = [0.6 0.6 0.2];
 plotWayPoints(wayPoints);
 
@@ -37,22 +48,22 @@ fnplt(trajectory,'r',2);
 
 % Perform Inverse Kinematics for a point in space
 ik = robotics.InverseKinematics('RigidBodyTree',newSubtree);
-weights = [0.1 0.1 1 1 1 1];
+weights = [0.1 0.1 0 1 1 1];
 
 initialguess = newSubtree.homeConfiguration;
 
-numTotalPoints = 30;
+numTotalPoints = 40;
 
 % Evaluate trajectory to create a vector of end-effector positions
 eePositions = ppval(trajectory,linspace(0,trajectory.breaks(end),numTotalPoints));
-
+ 
 for i = 1:size(eePositions,2)
     tform = trvec2tform(eePositions(:,i)');
     configSoln(i,:) = ik('l_hand',tform,weights,initialguess);
     initialguess = configSoln(i,:);
 end
 
-% 
+
 % show(robot);
 
 % Visualize the Atlas configurations
@@ -62,6 +73,7 @@ title('Atlas waypoint tracking visualization')
 for i = 1:30
     show(newSubtree,configSoln(i,:));
     pause(0.1)
+    clear ;
 end
 hold off
 
