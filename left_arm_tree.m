@@ -22,6 +22,7 @@ base = robot.BaseName;
 % show(robot);
 % showdetails(left_arm);
 newSubtree = subtree(robot,'l_clav');
+ a = removeBody(newSubtree,'l_palm');
 
 % Create a point for end effector position
 wayPoints = [0.6 0.6 0.2];
@@ -35,7 +36,7 @@ fnplt(trajectory,'r',2);
 
 % Perform Inverse Kinematics for a point in space
 ik = robotics.InverseKinematics('RigidBodyTree',newSubtree);
-weights = [0.1 0.1 0 1 1 1];
+weights = [0.1 0.1 1 1 1 1];
 %initialguess = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
 %initialguess =  struct('l_clav',0,'l_scap',0,'l_uarm',0,'l_larm',0,'l_ufarm',0,'l_lfarm',0,'l_hand',0,'l_palm',0,'l_finger_1_link_0',0,'l_finger_1_link_1',0,'l_finger_1_link_2',0,'l_finger_1_link_3',0,'l_finger_1_link_paradistal_hinge',0,'l_finger_1_link_median_actuating_hinge',0,'l_finger_1_link_median_bar',0,'l_finger_1_link_paramedian_hinge',0,'l_finger_1_link_median_bar_underactuated',0,'l_finger_1_link_paraproximal_actuating_hinge',0,'l_finger_1_link_paraproximal_bar',0,'l_finger_1_link_proximal_actuating_hinge',0,'l_finger_1_link_proximal_actuating_bar',0,'l_finger_2_link_0',0,'l_finger_2_link_1',0,'l_finger_2_link_2',0,'l_finger_2_link_3',0,'l_finger_2_link_paradistal_hinge',0,'l_finger_2_link_median_actuating_hinge',0,'l_finger_2_link_median_bar',0,'l_finger_2_link_paramedian_hinge',0,'l_finger_2_link_median_bar_underactuated',0,'l_finger_2_link_paraproximal_actuating_hinge',0,'l_finger_2_link_paraproximal_bar',0,'l_finger_2_link_proximal_actuating_hinge',0,'l_finger_2_link_proximal_actuating_bar',0,'l_finger_middle_link_0',0,'l_finger_middle_link_1',0,'l_finger_middle_link_2',0,'l_finger_middle_link_3',0,'l_finger_middle_link_paradistal_hinge',0,'l_finger_middle_link_median_actuating_hinge',0,'l_finger_middle_link_median_bar',0,'l_finger_middle_link_paramedian_hinge',0,'l_finger_middle_link_median_bar_underactuated',0,'l_finger_middle_link_paraproximal_actuating_hinge',0,'l_finger_middle_link_paraproximal_bar',0,'l_finger_middle_link_proximal_actuating_hinge',0,'l_finger_middle_link_proximal_actuating_bar',0,'l_end_eff',0);   
 
@@ -101,14 +102,27 @@ numTotalPoints = 30;
 % Evaluate trajectory to create a vector of end-effector positions
 eePositions = ppval(trajectory,linspace(0,trajectory.breaks(end),numTotalPoints));
 
-for idx = 1:size(eePositions,2)
-    tform = trvec2tform(eePositions(:,idx)');
-    configSoln(idx,:) = ik('l_end_eff',tform,weights,initialguess);
-    initialguess = configSoln(idx,:);
+for i = 1:size(eePositions,2)
+    tform = trvec2tform(eePositions(:,i)');
+    configSoln(i,:) = ik('l_hand',tform,weights,initialguess);
+    initialguess = configSoln(i,:);
 end
 
+% 
+% show(robot);
 
-show(robot);
+%% Visualize robot configurations
+title('Robot waypoint tracking visualization')
+%axis([-0.1 0.4 -0.35 0.35 0 0.35]);
+for idx = 1:size(eePositions,2)
+    show(robot,configSoln(idx,:), 'PreservePlot', false,'Frames','off');
+    pause(0.1)
+end
+hold off
+
+
+
+
 
 % Create RigidBodyTree object for inverse kinematics
 % Create tree-structured robot as it is representation of the robot structure
