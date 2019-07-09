@@ -1,31 +1,59 @@
-
 clear all;
-% f(1).JointPosition = {'l_arm_shx';'l_arm_ely';'l_arm_elx';'l_arm_wry';'l_arm_wrx';'l_arm_wry2';'l_palm_finger_1_joint';'l_finger_1_joint_1';'l_finger_1_joint_2';'l_finger_1_joint_3';'l_finger_1_joint_paradistal_hinge';'l_finger_1_joint_median_actuating_hinge';'l_finger_1_joint_median_actuating_hinge_median_bar';'l_finger_1_joint_paramedian_hinge';'l_finger_1_joint_paramedian_hinge_median_bar_underactuated';'l_finger_1_joint_paraproximal_actuating_hinge';'l_finger_1_joint_paraproximal_bar';'l_finger_1_joint_proximal_actuating_hinge';'l_finger_1_joint_proximal_actuating_bar';'l_palm_finger_2_joint';'l_finger_2_joint_1';'l_finger_2_joint_2';'l_finger_2_joint_3';'l_finger_2_joint_paradistal_hinge';'l_finger_2_joint_median_actuating_hinge';'l_finger_2_joint_median_actuating_hinge_median_bar';'l_finger_2_joint_paramedian_hinge';'l_finger_2_joint_paramedian_hinge_median_bar_underactuated';'l_finger_2_joint_paraproximal_actuating_hinge';'l_finger_2_joint_paraproximal_bar';'l_finger_2_joint_proximal_actuating_hinge';'l_finger_2_joint_proximal_actuating_bar';'l_palm_finger_middle_joint';'l_finger_middle_joint_1';'l_finger_middle_joint_2';'l_finger_middle_joint_3';'l_finger_middle_joint_paradistal_hinge';'l_finger_middle_joint_median_actuating_hinge';'l_finger_middle_joint_median_actuating_hinge_median_bar';'l_finger_middle_joint_paramedian_hinge';'l_finger_middle_joint_paramedian_hinge_median_bar_underactuated';'l_finger_middle_joint_paraproximal_actuating_hinge';'l_finger_middle_joint_paraproximal_bar';'l_finger_middle_joint_proximal_actuating_hinge';'l_finger_middle_joint_proximal_actuating_bar'};   
-% f(2).JointValue = {0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0};
-% s =
-% struct('JointPosition',{'l_arm_shx','l_arm_ely','l_arm_elx','l_arm_wry','l_arm_wrx','l_arm_wry2','l_palm_finger_1_joint','l_finger_1_joint_1','l_finger_1_joint_2','l_finger_1_joint_3','l_finger_1_joint_paradistal_hinge','l_finger_1_joint_median_actuating_hinge','l_finger_1_joint_median_actuating_hinge_median_bar','l_finger_1_joint_paramedian_hinge','l_finger_1_joint_paramedian_hinge_median_bar_underactuated','l_finger_1_joint_paraproximal_actuating_hinge','l_finger_1_joint_paraproximal_bar','l_finger_1_joint_proximal_actuating_hinge','l_finger_1_joint_proximal_actuating_bar','l_palm_finger_2_joint','l_finger_2_joint_1','l_finger_2_joint_2','l_finger_2_joint_3','l_finger_2_joint_paradistal_hinge','l_finger_2_joint_median_actuating_hinge','l_finger_2_joint_median_actuating_hinge_median_bar','l_finger_2_joint_paramedian_hinge','l_finger_2_joint_paramedian_hinge_median_bar_underactuated','l_finger_2_joint_paraproximal_actuating_hinge','l_finger_2_joint_paraproximal_bar','l_finger_2_joint_proximal_actuating_hinge','l_finger_2_joint_proximal_actuating_bar','l_palm_finger_middle_joint','l_finger_middle_joint_1','l_finger_middle_joint_2','l_finger_middle_joint_3','l_finger_middle_joint_paradistal_hinge','l_finger_middle_joint_median_actuating_hinge','l_finger_middle_joint_median_actuating_hinge_median_bar','l_finger_middle_joint_paramedian_hinge','l_finger_middle_joint_paramedian_hinge_median_bar_underactuated','l_finger_middle_joint_paraproximal_actuating_hinge','l_finger_middle_joint_paraproximal_bar','l_finger_middle_joint_proximal_actuating_hinge','l_finger_middle_joint_proximal_actuating_bar'},'JointValue',{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0});
-% 
 
+% Call the function written at the end of the code
+% Add the path to include all the folders and subfolders in the directory
 addpath(genpath(strcat(pwd,'/home/rajeshree/catkin_ws/src/manipulation')));
 robot = createRigidBodyTree;
 axes = show(robot);
 axes.CameraPositionMode = 'auto';
-base = robot.BaseName; 
 
-%% Make a subtree from utorso 
-newSubtree = subtree(robot,'utorso');
-a = removeBody(newSubtree,'l_palm');
-b = removeBody(newSubtree,'r_clav');
-c = removeBody(newSubtree,'l_situational_awareness_camera_link');
-d = removeBody(newSubtree,'head');
-c = removeBody(newSubtree,'r_situational_awareness_camera_link');
-newJoint = robotics.Joint('fixed');
-replaceJoint(newSubtree,'utorso',newJoint);
+baseName = robot.BaseName;
+body = getBody(robot,'r_clav');
+dhparams = [ 0 0 0 0;-0.0125 0 0.2120 1.0000];
+
+newSubtree =  subtree(robot,'r_clav');
+a = removeBody(newSubtree,'r_palm');
+
+world = robotics.Joint('world','fixed');
+setFixedTransform(world,dhparams(1,:),'dh');
+
+jnt = robotics.Joint('r_clav');
+setFixedTransform(jnt,dhparams(2,:),'dh');
 
 
+% dhparams = [1.0000 0 0 -0.0125; 0 1.0000 0 0; 0 0 1.0000 0.2120; 0 0 0 1.0000];
+% 
+% setFixedTransform(jnt1,dhparams(:,4),'dh');
+% body.Joint = jnt1;
+% 
+% addBody(robot,body1,'pelvis')
 
 
+% body = getBody(robot,'r_clav'); 
+% dhparams = [-0.0125 0 0.2120 1.0000];
+% jointObj = robotics.Joint('r_arm_shz');
+% setFixedTransform(jointObj,dhparams,'dh');
+% body.Joint = jointObj;
+% 
+% newSubtree =  removeBody(robot,'r_clav');
+% a = removeBody(newSubtree,'r_palm');
+ 
+% body = getBody(robot,'r_clav');
+% newSubtree =  removeBody(robot,'r_clav');
+% a = removeBody(newSubtree,'r_palm');
+% 
+% 
+% dhparams = [1.0000 0 0 -0.0125; 0 1.0000 0 0; 0 0 1.0000 0.2120; 0 0 0 1.0000];
+% 
+% jnt = robotics.Joint('jnt','fixed');
+% 
+% setFixedTransform(jnt,dhparams(:,4),'dh');
+% replaceJoint(robot,'utorso',jnt);
+% 
+% 
+show(newSubtree);
 
+%%
 
 function [robot,homeConfig] = createRigidBodyTree
 
@@ -45,4 +73,3 @@ function [robot,homeConfig] = createRigidBodyTree
 
     
 end
-
