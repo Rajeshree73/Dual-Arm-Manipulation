@@ -13,8 +13,8 @@ pause(0.1);
 
 configSoln = zeros(1,109);
 
-for i = 4:10
-   configSoln(i) = 0.5;
+for i = 3:10
+   configSoln(i) = -0.5;
 end
 
 % Visualize robot configuration
