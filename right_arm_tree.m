@@ -8,41 +8,54 @@ addpath(genpath(strcat(pwd,'/home/rajeshree/catkin_ws/src/manipulation')));
 robot = createRigidBodyTree;
 axes = show(robot);
 axes.CameraPositionMode = 'auto';
-
+show(robot);
 
 % Create new from r_clav rigid body tree and assign it as subtree. and then
 % remove the end effectors and all fingers to remove the joints.
-%  
-% newSubtree = subtree(robot,'r_clav');
-% base = newSubtree.BaseName;
+
+% 
+% newSubtree =  removeBody(robot,'r_clav');
 % a = removeBody(newSubtree,'r_palm');
-% %addSubtree(robot,'mtorso',newSubtree);
-
-
-newSubtree = subtree(robot,'pelvis');
-a = removeBody(newSubtree,'l_clav');
+newSubtree = removeBody(robot,'mtorso');
+% a = removeBody(newSubtree,'r_clav');
 b = removeBody(newSubtree,'r_palm');
-c = removeBody(newSubtree,'l_situational_awareness_camera_link');
+c = removeBody(newSubtree,'l_clav');
 d = removeBody(newSubtree,'head');
-e = removeBody(newSubtree,'r_situational_awareness_camera_link');
-f = removeBody(newSubtree,'l_uglut');
-g = removeBody(newSubtree,'r_uglut');
-h = removeBody(newSubtree,'imu_link');
+e = removeBody(newSubtree,'l_situational_awareness_camera_link');
+f = removeBody(newSubtree,'r_situational_awareness_camera_link');
+% 
+% gripper = 'utorso';
+% heightAboveTable = robotics.CartesianBounds(gripper);
+% heightAboveTable.Bounds = [0, 0; ...
+%                            0, 0; ...
+%                            0, 0];
+% gripper1 = 'mtorso';
+% heightAboveTable = robotics.CartesianBounds(gripper);
+% heightAboveTable.Bounds = [0, 0; ...
+%                            0, 0; ...
+%                            0, 0];
+%  newJoint = robotics.Joint('fixedd');
+%  replaceJoint(newSubtree,'mtorso',newJoint);
+%  newJoint1 = robotics.Joint('fixed');
+%  replaceJoint(newSubtree,'utorso',newJoint1);
+
+addSubtree(robot,'pelvis',newSubtree);
+%  newSubtree = removeBody(robot,'r_clav');
+% a = removeBody(newSubtree,'r_palm');
+% addSubtree(robot,'utorso',newSubtree);
+
+% b = removeBody(newSubtree,'r_palm');
+% c = removeBody(newSubtree,'l_situational_awareness_camera_link');
+% d = removeBody(newSubtree,'head');
+
+% make utorso fixed joint
 
 
-
-% newJoint = robotics.Joint('back_bkx');
-% replaceJoint(newSubtree,'utorso',newJoint);
-
-newJoint = robotics.Joint('back_bkz');
-replaceJoint(newSubtree,'ltorso',newJoint);
-
-newJoint = robotics.Joint('back_bky');
-replaceJoint(newSubtree,'mtorso',newJoint);
 
 
 % Create a point for end effector position
-wayPoints = [0.6 -0.6 0.2];
+wayPoints = [0.5 -0.5 0.3];
+% wayPoints = [1.0 -0.2 0.02;1.1 0 0.28;0.8 0.05 0.2;1.2 0.09 0.15;0.85 0.12 0.1;0.9 0.1 0.2;0.75 0 0.15;0.95 0.2 0.02];
 plotWayPoints(wayPoints);
 trajectory = cscvn(wayPoints');
 
@@ -65,9 +78,9 @@ for i = 1:size(eePositions,2)
     tform = trvec2tform(eePositions(:,i)');
     configSoln(i,:) = ik('r_hand',tform,weights,initialguess);
     initialguess = configSoln(i,:);
+ 
 end
 
-% 
 % show(robot);
 
 % Visualize the Atlas configurations
