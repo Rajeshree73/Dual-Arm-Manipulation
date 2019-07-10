@@ -6,10 +6,12 @@ addpath(genpath(strcat(pwd,'/home/rajeshree/catkin_ws/src/manipulation')));
 robot = createRigidBodyTree;
 axes = show(robot);
 axes.CameraPositionMode = 'auto';
-%%
+%% The r_clav is removed from the original body
 tree =  removeBody(robot,'r_clav');
 a = removeBody(tree,'r_palm');
 
+% new body is created here with the BaseName "base" by default and then one
+% Body is attached to it at a distance given by tvec
 body1 = robotics.RigidBody('body1');
 
 jnt1 = robotics.Joint('jnt1','revolute');
@@ -21,6 +23,8 @@ body1.Joint = jnt1;
 newSubtree = robotics.RigidBodyTree;
 addBody(newSubtree,body1,'base');
 
+% newSubtree is added to the created dummy tree to shift the base of the
+% earlier tree. 
 addSubtree(newSubtree,'body1',tree);
 show(newSubtree);
 
