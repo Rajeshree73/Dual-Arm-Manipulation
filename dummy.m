@@ -6,52 +6,37 @@ addpath(genpath(strcat(pwd,'/home/rajeshree/catkin_ws/src/manipulation')));
 robot = createRigidBodyTree;
 axes = show(robot);
 axes.CameraPositionMode = 'auto';
+%%
 
-baseName = robot.BaseName;
-body = getBody(robot,'r_clav');
-dhparams = [ 0 0 0 0;-0.0125 0 0.2120 1.0000];
-
-newSubtree =  subtree(robot,'r_clav');
-a = removeBody(newSubtree,'r_palm');
-
-world = robotics.Joint('world','fixed');
-setFixedTransform(world,dhparams(1,:),'dh');
-
-jnt = robotics.Joint('r_clav');
-setFixedTransform(jnt,dhparams(2,:),'dh');
-
-
-% dhparams = [1.0000 0 0 -0.0125; 0 1.0000 0 0; 0 0 1.0000 0.2120; 0 0 0 1.0000];
-% 
-% setFixedTransform(jnt1,dhparams(:,4),'dh');
-% body.Joint = jnt1;
-% 
-% addBody(robot,body1,'pelvis')
-
-
-% body = getBody(robot,'r_clav'); 
-% dhparams = [-0.0125 0 0.2120 1.0000];
-% jointObj = robotics.Joint('r_arm_shz');
-% setFixedTransform(jointObj,dhparams,'dh');
-% body.Joint = jointObj;
-% 
-% newSubtree =  removeBody(robot,'r_clav');
-% a = removeBody(newSubtree,'r_palm');
  
-% body = getBody(robot,'r_clav');
-% newSubtree =  removeBody(robot,'r_clav');
-% a = removeBody(newSubtree,'r_palm');
-% 
-% 
-% dhparams = [1.0000 0 0 -0.0125; 0 1.0000 0 0; 0 0 1.0000 0.2120; 0 0 0 1.0000];
-% 
-% jnt = robotics.Joint('jnt','fixed');
-% 
-% setFixedTransform(jnt,dhparams(:,4),'dh');
-% replaceJoint(robot,'utorso',jnt);
-% 
+arm =  removeBody(robot,'r_clav');
+a =  removeBody(arm,'r_palm');
+
+newSubtree = robotics.RigidBodyTree;
+body = robotics.RigidBody('body');
+world = robotics.Joint('world');
+body.Joint = world;
+addBody(newSubtree,body,'base');
+tform = trvec2tform([-0.0125, 0, 0.2120]);
+setFixedTransform(world,tform);
+
+
+body1 =  robotics.RigidBody('body1');
+jnt = robotics.Joint('fixed');
+body1.Joint = jnt;
+tform1 = trvec2tform([-0.0125, 0, 0.2120]);
+setFixedTransform(jnt,tform1);
+addBody(newSubtree,body1,'body');
+
+addSubtree(newSubtree,'body1',arm);
+
+% jointObj = robotics.Joint('r_arm_shz');
+% mdhparams =  [1.0000 0 0 0.1281; 0 1.0000 0 -0.2256; 0 0 1.0000 0.6896;0 0 0 1.0000];
+% setFixedTransform(jointObj,mdhparams(4,:),'mdh');
+
 % 
 show(newSubtree);
+% show(robot1);
 
 %%
 
