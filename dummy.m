@@ -7,36 +7,22 @@ robot = createRigidBodyTree;
 axes = show(robot);
 axes.CameraPositionMode = 'auto';
 %%
+tree =  removeBody(robot,'r_clav');
+a = removeBody(tree,'r_palm');
 
- 
-arm =  removeBody(robot,'r_clav');
-a =  removeBody(arm,'r_palm');
+body1 = robotics.RigidBody('body1');
+
+jnt1 = robotics.Joint('jnt1','revolute');
+jnt1.HomePosition = 0;
+tform = trvec2tform([-0.0125, 0, 0.2120]);
+setFixedTransform(jnt1,tform);
+body1.Joint = jnt1;
 
 newSubtree = robotics.RigidBodyTree;
-body = robotics.RigidBody('body');
-world = robotics.Joint('world');
-body.Joint = world;
-addBody(newSubtree,body,'base');
-tform = trvec2tform([-0.0125, 0, 0.2120]);
-setFixedTransform(world,tform);
+addBody(newSubtree,body1,'base');
 
-
-body1 =  robotics.RigidBody('body1');
-jnt = robotics.Joint('fixed');
-body1.Joint = jnt;
-tform1 = trvec2tform([-0.0125, 0, 0.2120]);
-setFixedTransform(jnt,tform1);
-addBody(newSubtree,body1,'body');
-
-addSubtree(newSubtree,'body1',arm);
-
-% jointObj = robotics.Joint('r_arm_shz');
-% mdhparams =  [1.0000 0 0 0.1281; 0 1.0000 0 -0.2256; 0 0 1.0000 0.6896;0 0 0 1.0000];
-% setFixedTransform(jointObj,mdhparams(4,:),'mdh');
-
-% 
+addSubtree(newSubtree,'body1',tree);
 show(newSubtree);
-% show(robot1);
 
 %%
 
