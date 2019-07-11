@@ -1,5 +1,5 @@
 % Create rigid body tree from pelvis to left arm for inverse kinematics 
-% Pelvis is taken as a Basename and from there to the left end-effector rigid body is created 
+% utorso is taken as a Basename and from there to the left end-effector rigid body is created 
 clear all;
 
 % Call the function written at the end of the code
@@ -10,25 +10,32 @@ axes = show(robot);
 axes.CameraPositionMode = 'auto';
 base = robot.BaseName; 
 
-% % Create new empty rigid body tree and assign it as subtree.
-% left_arm = robotics.RigidBodyTree;
-% 
-% 
-% body1 = getBody(robot,'ltorso');
-% jnt1 = robotics.Joint('jnt1','revolute');
-% replaceJoint(robot,'ltorso',jnt1);
-% addBody(left_arm,body1,'base');
-% 
-% show(robot);
-% showdetails(left_arm);
 
-newSubtree = subtree(robot,'l_clav');
- a = removeBody(newSubtree,'l_palm');
+
+% Create a subtree from l_clav which will by default give "utorso" as Base
+tree =  removeBody(robot,'l_clav');
+% Remove all the joints from l_palm to reduce computation
+a = removeBody(tree,'l_palm');
+
+% New rigid body is created in order to shift the base of the new tree to
+% the origin which is now at 'utorso'
+body1 = robotics.RigidBody('body1');
+
+world = robotics.Joint('world');
+world.HomePosition;
+tform = trvec2tform([-0.0125, 0, 0.2120]);
+setFixedTransform(world,tform);
+body1.Joint = world;
+% To adjust it new rigid body tree is created
+newSubtree = robotics.RigidBodyTree;
+
+addBody(newSubtree,body1,'base');
+
+addSubtree(newSubtree,'body1',tree);
 
 % Create a point for end effector position
 wayPoints = [0.6 0.6 0.2];
 plotWayPoints(wayPoints);
-
 trajectory = cscvn(wayPoints');
 
 % Plot trajectory spline and waypoints
