@@ -1,0 +1,129 @@
+
+
+Since most currently available motors operate at low torques  and  at  up  to  thousands  of  RPM,  speed  reduction  and  torque  amplification are required.  
+
+These speed-reduction devices should have zero or low slippage and backlash(defined as the  amount  of  rotation  available  at  the  output  of  the  speed-reduction device without motion at the input).
+
+Robots are also equipped with sensors to measure the motion at the joints. 
+
+For both re-volute and prismatic joints,  encoders,  potentiometers,  or resolvers measure the displacement and sometimes tachometers are used to measure velocity.  Forces and torques at the joints or at the end-effector of the robot can be measured using various types of force–torque sensors.  
+
+Additional sensors maybe used to help localize objects or the robot itself, such as vision-only cameras,RGB-D cameras which measure the color (RGB) and depth (D) to each pixel,laser range finders, and various types of acoustic sensor.
+
+## READ ABOUT THIS SENSORS? AND HOW DO THEY WORK? ##
+
+configuration of a robot system, which is a specification of the position of every point of the robot.  
+
+the  configuration  of  a  rigid  body  in  the  plane  can  be  described using three variables (two for the position and one for the orientation) and the configuration of a rigid body in space can be described using six variables (three for the position and three for the orientation). 
+
+The number of variables is the number of degrees of freedom (dof) of the rigid body.  It is also the dimension of the configuration space, the space of all configurations of the body
+
+The dof of a robot,  and hence the dimension of its configuration space,  is the sum of the dof of its rigid bodies minus the number of constraints on the motion of those rigid bodies provided by the joints
+
+part from calculating the dof, other configuration space concepts of interest include the topology(or “shape”) of the configuration space and its representation.
+
+The surface of a unit sphere, for example,could be represented using a minimal number of coordinates, such as latitude and longitude, or it could be represented by three numbers (x,y,z) subject to the constraint x2+y2+z2= 1.  The former is an explicit parametrization of the space and the latter is an implicit parametrization of the space.
+
+3×3 matrix representation for describing a frame’s orientation; such a matrix is referred to as a rotation matrix. A rotation matrix is parametrized by three independent coordinates.  The most natural and intuitive way to visualize a rotation matrix is in terms of its exponential coordinate representation
+
+The exponential coordinates are defined as ω=ˆωθ ∈R3, which is a three-parameter representation.There are several other well-known coordinate representations, e.g., Euler angles, Cayley Rodrigues parameters, and unit quaternions, Another  reason  for  focusing  on  the  exponential  description  of  rotations  is that  they  lead  directly  to  the  exponential  description  of  rigid-body  motions.
+
+## what is screw theory ?? ##
+
+the linear algebraic constructs of screw theory, including the unified description of linear and angular velocities as six-dimensional twists(also known as spatial velocities), and an analogous description of three dimensional forces and moments as six dimensional wrenches (also known as spatial forces).
+
+Central to velocity kinematics is the Jacobian of the forward kinematics.
+
+Kinematic singularities, which are configurations in which the end-effector frame loses the ability to move or rotate in one or more directions, correspond to those configurations at which the Jacobian matrix fails to have maximal rank. The manipulability ellipsoid, whose shape indicates the ease with which the robot can move in various directions, is also derived from the Jacobian.
+
+In static equilibrium settings, the Jacobian is used to determine what forces and torques need to be exerted at the joints in order for the end-effector to apply a desired wrench.
+
+Dynamics  is  the  study  of  motion  taking  into  account  the  forces  and  torques that cause it.
+
+the forward dynamics problem is to determine the resulting joint accelerations for a given set of joint forces and torques.  The inverse dynamics problem is to determine the input joint torques and forces needed for desired joint accelerations.
+The dynamic equations relating the forces and torques to the motion of the robot’slinks are given by a set of second-order ordinary differential equations.
+
+ In the Lagrangian approach, first a set of coordinates – referred to as  generalized  coordinates  in  the  classical  dynamics  literature  –  is  chosen  to parametrize  the  configuration  space.   The  sum  of  the  potential  and  kinetic energies  of  the  robot’s  links  are  then  expressed  in  terms  of  the  generalized coordinates  and  their  time  derivatives.   These  are  then  substituted into the Euler–Lagrange equations, which then lead to a set of second order differential equations for the dynamics, expressed in the chosen coordinates for the configuration space
+
+The Newton–Euler approach builds on the generalization off=ma, i.e.,the equations governing the acceleration of a rigid body given the wrench acting on it.
+
+Actuators, such as electric motors,deliver forces or torques that cause the robot’s links to move. 
+
+The configuration of a robot is a complete specification of the position of every point of the robot.  The minimum number n of real-valued coordinates needed to represent the configuration is the number of degrees of freedom(dof) of the robot.  Then-dimensional space containing all possible configurations of the robot is called the configuration space(C-space).  The configuration of a robot is represented by a point in its C-space.
+
+Every joint connects exactly two links; joints that simultaneously connect three or more links are not allowed.  The revolute joint(R), also called a hinge joint, allows rotational motion about the joint axis.  The prismatic joint(P), also called a sliding or linear joint, allows translational (or rectilinear) motion along the direction of the joint axis.  The helical joint(H), also called a screw joint, allows simultaneous rotation and translation about a screw axis. Revolute, prismatic,and helical joints all have one degree of freedom.
+
+Joints can also have multiple degrees of freedom.  The cylindrical joint(C)has two degrees of freedom and allows independent translations and rotations about a single fixed joint axis.  The universal joint(U) is another two-degree-of-freedom joint that consists of a pair of revolute joints arranged so that their joint axes are orthogonal.  The spherical joint(S), also called a ball-and-socket joint, has three degrees of freedom and functions much like our shoulder joint.
+
+A  person standing with both feet on the ground is an example of a closed-chain mechanism,  since  a  closed  loop  can  be  traced  from  the  ground,  through  the  right leg, through the waist, through the left leg, and back to ground (recall that the ground itself is a link).
+
+two spaces are topologically equivalent if one can be continuously deformed into the other without cutting or gluing.
+
+Topologically  distinct  one-dimensional  spaces  include  the  circle,  the  line,and a closed interval of the line.  The circle is written mathematically as S or S1, a one-dimensional “sphere.” The line can be written as E or E1, indicating a one-dimensional Euclidean (or “flat”) space
+
+Note that the topology of a space is a fundamental property of the space itself and is independent of how we choose coordinates to represent points in the space.
+
+a vector is a natural way to represent a point in a Euclidean space.
+
+The fact that the four links always form a closed loop can be expressedby the following three equations:
+L1cosθ1+L2cos(θ1+θ2) +···+L4cos(θ1+···+θ4)    =    0,
+L1sinθ1+L2sin(θ1+θ2) +···+L4sin(θ1+···+θ4)    =    0,
+θ1+θ2+θ3+θ4−2π=    0
+These equations are sometimes referred to asloop-closure equations.
+
+or general robots containing one or more closed loops, the configuration space can be implicitly represented by the column vector
+θ= [θ1···θn] T∈Rn and loop-closure equations of the form 
+g(θ) =g1(θ1,...,θn)...gk(θ1,...,θn)= 0. 
+a  set  of k independent  equations,  with k≤n.   Such  constraints  are  known as holonomic constraints, ones that reduce the dimension of the C-space.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
