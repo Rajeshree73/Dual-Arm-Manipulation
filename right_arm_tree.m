@@ -10,51 +10,32 @@ axes = show(robot);
 axes.CameraPositionMode = 'auto';
 show(robot);
 
-% Create new from r_clav rigid body tree and assign it as subtree. and then
-% remove the end effectors and all fingers to remove the joints.
+% Create a subtree from r_clav which will by default give "utorso" as Base
+tree =  removeBody(robot,'r_clav');
+% Remove all the joints from r_palm to reduce computation
+a = removeBody(tree,'r_palm');
 
-% 
-% newSubtree =  removeBody(robot,'r_clav');
-% a = removeBody(newSubtree,'r_palm');
-newSubtree = removeBody(robot,'mtorso');
-% a = removeBody(newSubtree,'r_clav');
-b = removeBody(newSubtree,'r_palm');
-c = removeBody(newSubtree,'l_clav');
-d = removeBody(newSubtree,'head');
-e = removeBody(newSubtree,'l_situational_awareness_camera_link');
-f = removeBody(newSubtree,'r_situational_awareness_camera_link');
-% 
-% gripper = 'utorso';
-% heightAboveTable = robotics.CartesianBounds(gripper);
-% heightAboveTable.Bounds = [0, 0; ...
-%                            0, 0; ...
-%                            0, 0];
-% gripper1 = 'mtorso';
-% heightAboveTable = robotics.CartesianBounds(gripper);
-% heightAboveTable.Bounds = [0, 0; ...
-%                            0, 0; ...
-%                            0, 0];
-%  newJoint = robotics.Joint('fixedd');
-%  replaceJoint(newSubtree,'mtorso',newJoint);
-%  newJoint1 = robotics.Joint('fixed');
-%  replaceJoint(newSubtree,'utorso',newJoint1);
+% New rigid body is created in order to shift the base of the new tree to
+% the origin which is now at 'utorso'
+body1 = robotics.RigidBody('body1');
 
-addSubtree(robot,'pelvis',newSubtree);
-%  newSubtree = removeBody(robot,'r_clav');
-% a = removeBody(newSubtree,'r_palm');
-% addSubtree(robot,'utorso',newSubtree);
+world = robotics.Joint('world');
+world.HomePosition;
+tform = trvec2tform([-0.0125, 0, 0.2120]);
+setFixedTransform(world,tform);
+body1.Joint = world;
+% To adjust it new rigid body tree is created
+newSubtree = robotics.RigidBodyTree;
 
-% b = removeBody(newSubtree,'r_palm');
-% c = removeBody(newSubtree,'l_situational_awareness_camera_link');
-% d = removeBody(newSubtree,'head');
+addBody(newSubtree,body1,'base');
 
-% make utorso fixed joint
+addSubtree(newSubtree,'body1',tree);
 
 
 
 
 % Create a point for end effector position
-wayPoints = [0.5 -0.5 0.3];
+wayPoints = [0.6 -0.5 0.3];
 % wayPoints = [1.0 -0.2 0.02;1.1 0 0.28;0.8 0.05 0.2;1.2 0.09 0.15;0.85 0.12 0.1;0.9 0.1 0.2;0.75 0 0.15;0.95 0.2 0.02];
 plotWayPoints(wayPoints);
 trajectory = cscvn(wayPoints');
