@@ -1,4 +1,5 @@
 
+@_CONFIGURATION_SPACE
 
 Since most currently available motors operate at low torques  and  at  up  to  thousands  of  RPM,  speed  reduction  and  torque  amplification are required.  
 
@@ -65,7 +66,7 @@ Note that the topology of a space is a fundamental property of the space itself 
 
 a vector is a natural way to represent a point in a Euclidean space.
 
-The fact that the four links always form a closed loop can be expressedby the following three equations:
+The fact that the four links always form a closed loop can be expresse dby the following three equations:
 L1cosθ1+L2cos(θ1+θ2) +···+L4cos(θ1+···+θ4)    =    0,
 L1sinθ1+L2sin(θ1+θ2) +···+L4sin(θ1+···+θ4)    =    0,
 θ1+θ2+θ3+θ4−2π=    0
@@ -74,7 +75,33 @@ These equations are sometimes referred to asloop-closure equations.
 or general robots containing one or more closed loops, the configuration space can be implicitly represented by the column vector
 θ= [θ1···θn] T∈Rn and loop-closure equations of the form 
 g(θ) =g1(θ1,...,θn)...gk(θ1,...,θn)= 0. 
-a  set  of k independent  equations,  with k≤n.   Such  constraints  are  known as holonomic constraints, ones that reduce the dimension of the C-space.
+a  set  of k independent  equations,  with k≤n.   Such  constraints  are  known as holonomic constraints, ones that reduce the dimension of the C-space. Such
+constraints reduce the dimension of the feasible velocities of the system but
+do not reduce the dimension of the reachable C-space. Nonholonomic constraints arise in robot systems subject to conservation
+of momentum or rolling without slipping.
+
+## Non-holonomic constraints ?? ##
+
+Task space and workspace both relate to the end- effector of the robot and not the entire robot. The task space is a space in which the robot’s task can be naturally ex-
+pressed. For example, if the robot’s task is to plot with a pen on a piece of paper,
+the task space would be R^2
+
+The workspace is a specification of the configurations that the end-effector
+of the robot can reach.
+
+Some points in the task space may not be reachable at all by the robot,
+such as some points on a chalkboard. By definition, however, all points in the
+workspace are reachable by at least one configuration of the robot.
+
+In the kinematics literature, structures that consist of links connected by joints
+are also called mechanisms or linkages.
+
+
+@@_RIGID_BODY_MOTIONS
+
+
+
+
 
 
 
