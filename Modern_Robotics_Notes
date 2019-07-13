@@ -99,6 +99,16 @@ are also called mechanisms or linkages.
 
 @@_RIGID_BODY_MOTIONS
 
+rigid body’s velocity,
+however, can be represented simply as a point in R 6 , defined by three angular
+velocities and three linear velocities, which together we call a spatial velocity
+or twist.
+
+the motion of a screw, rotating about and translat-
+ing along the same fixed axis. The observation that all configurations can be
+achieved by a screw motion motivates a six-parameter representation of the
+configuration called the exponential coordinates.
+
 
 
 
