@@ -109,6 +109,108 @@ ing along the same fixed axis. The observation that all configurations can be
 achieved by a screw motion motivates a six-parameter representation of the
 configuration called the exponential coordinates.
 
+Chasles–Mozzi theorem which states that every rigid-body displace-
+ment can be obtained by a finite rotation and translation about a fixed screw
+axis.
+
+Rather than treat
+these as separate three-dimensional quantities, we merge the moment and force
+vectors into a six-dimensional wrench.
+
+
+@@_VELOCITY_KINEMATICS_AND_STATICS
+
+J(θ) ∈ R m×n is called the Jacobian. The Jacobian matrix represents
+the linear sensitivity of the end-effector velocity ẋ to the joint velocity θ̇, and it
+is a function of the joint variables θ.
+
+singularities; they are characterized by a situation where the robot tip
+is unable to generate velocities in certain directions.
+
+The Jacobian can be used to map bounds on the rotational speed of the joints
+to bounds on v tip.
+
+Rather than mapping a polygon
+of joint velocities through the Jacobian, we could instead map
+a unit circle of joint velocities in the θ 1 –θ 2 -plane. This circle represents an
+“iso-effort” contour in the joint velocity space, where total actuator effort is
+considered to be the sum of squares of the joint velocities. This circle maps
+through the Jacobian to an ellipse in the space of tip velocities, and this ellipse
+is referred to as the manipulability ellipsoid. 
+
+As the manipulator
+configuration approaches a singularity, the ellipse collapses to a line segment,
+since the ability of the tip to move in one direction is lost.
+
+Using the manipulability ellipsoid one can quantify how close a given posture
+is to a singularity. For example, we can compare the lengths of the major and
+minor principal semi-axes of the manipulability ellipsoid, respectively denoted
+l-max and l-min . The closer the ellipsoid is to a circle, i.e., the closer the ratio
+(l-max /l-min) is to 1, the more easily can the tip move in arbitrary directions and
+thus the more removed it is from a singularity.
+
+
+
+
+@@_ROBOT_CONTROL
+
+the robot cannot independently control the motion and force in the same
+direction.
+
+Once we have chosen a control goal consistent with the task and environ-
+ment, we can use feedback control to achieve it. Feedback control uses position,
+velocity, and force sensors to measure the actual behavior of the robot, com-
+pares it with the desired behavior, and modulates the control signals sent to the
+actuators.
+
+The sensors are
+typically: potentiometers, encoders, or resolvers for joint position and angle
+sensing; tachometers for joint velocity sensing; joint force–torque sensors; and/or
+multi-axis force–torque sensors at the “wrist” between the end of the arm and
+the end-effector.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
