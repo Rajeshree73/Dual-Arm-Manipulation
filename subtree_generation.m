@@ -1,8 +1,11 @@
-function newSubtree = Subtree_generation(initial_BodyName,final_BodyName)
+% General function to create a subtree from the robot 
+% Assign initial and final body name 
+
+function [newSubtree] = Subtree_generation(initial_BodyName,final_BodyName)
 
 addpath(genpath(strcat(pwd,'/home/rajeshree/catkin_ws/src/manipulation')));
 robot = createRigidBodyTree;
-axes = show(robot);
+% axes = show(robot);
 homeConfig = robot.homeConfiguration;
 axes.CameraPositionMode = 'auto';
 base = robot.BaseName; 
@@ -34,7 +37,6 @@ addBody(newSubtree,body1,'base');
 
 addSubtree(newSubtree,'body1',tree);
    
-
 
 
 % Create RigidBodyTree object for inverse kinematics
